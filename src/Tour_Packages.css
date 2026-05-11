@@ -148,39 +148,25 @@
    MAIN LAYOUT
    ============================================================ */
 .main-layout {
-  display: flex;
-  gap: 1.5rem;
+  display: block;
   padding: 1.5rem;
   max-width: 1250px;
   margin: 0 auto;
 }
 
 /* ============================================================
-   FILTERS SIDEBAR
+   FILTERS SIDEBAR (Antd Drawer Styling)
    ============================================================ */
-.filters-sidebar {
-  width: 230px;
-  flex-shrink: 0;
+.custom-antd-drawer .ant-drawer-body {
+  padding: 0;
+  background: #f8fafc;
 }
 
-.filter-card {
-  background: #ffffff;
-  border-radius: var(--radius-xl);
-  border: 0.5px solid #e2e8f0;
+.custom-antd-drawer .filter-card {
+  background: transparent;
+  border-radius: 0;
+  border: none;
   padding: 1rem 1.1rem;
-}
-
-.filter-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 14px;
-}
-
-.filter-header-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--color-primary);
 }
 
 .filter-reset-btn {
@@ -198,6 +184,15 @@
 .filter-reset-btn:hover {
   color: var(--color-primary-dark);
 }
+
+.filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+
 
 /* Filter Group */
 .filter-group {
@@ -388,6 +383,32 @@
 
 .search-bar input::placeholder {
   color: #94a3b8;
+}
+
+/* Filter Floating Btn */
+.floating-filter-btn {
+  position: fixed;
+  right: 20px;
+  bottom: 30px;
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 30px;
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  z-index: 990;
+  box-shadow: 0 5px 20px rgba(30, 58, 138, 0.4);
+  transition: 0.2s;
+}
+
+.floating-filter-btn:hover {
+  transform: translateY(-3px);
+  background: #172554;
 }
 
 /* Sort */
@@ -1156,4 +1177,59 @@
 .submit-modal-btn:hover {
   background: #172554;
   transform: translateY(-2px);
+}
+
+/* Promo Banner Style (Horizontal) */
+.custom-promo-card.promo-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  padding: 1.8rem 2.5rem;
+}
+
+.promo-content-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.promo-banner .promo-icon {
+  margin-bottom: 0;
+  font-size: 2.5rem;
+}
+
+.promo-banner h3 {
+  margin-bottom: 0.2rem;
+  font-size: 1.3rem;
+}
+
+.promo-banner p {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+}
+
+.promo-banner .promo-btn {
+  width: auto;
+  padding: 12px 28px;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .custom-promo-card.promo-banner {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+  .promo-content-left {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .promo-banner .promo-btn {
+    width: 100%;
+  }
 }

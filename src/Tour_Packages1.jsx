@@ -13,8 +13,6 @@ import {
   FiAnchor, FiSunrise, FiNavigation, FiUser,
   FiCheck, FiCamera, FiLayers, FiX
 } from "react-icons/fi";
-import { MdFilterListAlt } from "react-icons/md";
-import { Drawer } from "antd";
 
 import puducherryImg from "./assets/images/puducherry.png";
 import mahabalipuramImg from "./assets/images/mahabalipuram.png";
@@ -233,14 +231,6 @@ const PackageCard = ({ pkg, wishlisted, onWishlist, onViewDetails, viewMode }) =
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function TourPackages({ onNavigate, onViewDetails }) {
   const [search, setSearch] = useState("");
-  const [sort, setSort] = useState("latest");
-  const [showCustomModal, setShowCustomModal] = useState(false);
-  const [showFilterDrawer, setShowFilterDrawer] = useState(false);
-  const [wishlist, setWishlist] = useState([]);
-  const [viewMode, setViewMode] = useState("list");
-  const [currentPage, setCurrentPage] = useState(1);
-
-  // ─── Filter States (Active) ───
   const [destination, setDestination] = useState("all");
   const [duration, setDuration] = useState("any");
   const [stars, setStars] = useState({ 5: true, 4: true, 3: false, 2: false, 1: false });
@@ -248,38 +238,11 @@ export default function TourPackages({ onNavigate, onViewDetails }) {
   const [inclusions, setInclusions] = useState([]);
   const [groupSize, setGroupSize] = useState("any");
   const [budget, setBudget] = useState(50000);
-
-  // ─── Filter States (Pending/Draft) ───
-  const [pDestination, setPDestination] = useState(destination);
-  const [pDuration, setPDuration] = useState(duration);
-  const [pStars, setPStars] = useState(stars);
-  const [pPropertyTypes, setPPropertyTypes] = useState(propertyTypes);
-  const [pInclusions, setPInclusions] = useState(inclusions);
-  const [pGroupSize, setPGroupSize] = useState(groupSize);
-  const [pBudget, setPBudget] = useState(budget);
-
-  // When drawer opens, sync pending states with active states
-  const openFilters = () => {
-    setPDestination(destination);
-    setPDuration(duration);
-    setPStars(stars);
-    setPPropertyTypes(propertyTypes);
-    setPInclusions(inclusions);
-    setPGroupSize(groupSize);
-    setPBudget(budget);
-    setShowFilterDrawer(true);
-  };
-
-  const applyFilters = () => {
-    setDestination(pDestination);
-    setDuration(pDuration);
-    setStars(pStars);
-    setPropertyTypes(pPropertyTypes);
-    setInclusions(pInclusions);
-    setGroupSize(pGroupSize);
-    setBudget(pBudget);
-    setShowFilterDrawer(false);
-  };
+  const [sort, setSort] = useState("latest");
+  const [showCustomModal, setShowCustomModal] = useState(false);
+  const [wishlist, setWishlist] = useState([]);
+  const [viewMode, setViewMode] = useState("list");
+  const [currentPage, setCurrentPage] = useState(1);
 
   const toggleWishlist = (id) =>
     setWishlist((w) => (w.includes(id) ? w.filter((x) => x !== id) : [...w, id]));
@@ -357,36 +320,27 @@ export default function TourPackages({ onNavigate, onViewDetails }) {
 
       {/* ── Main Layout ── */}
       <div className="main-layout">
-        {/* ── Filters Sidebar (Antd Drawer) ── */}
-        <Drawer
-          title={
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <MdFilterListAlt size={20} /> Filters
-            </div>
-          }
-          placement="right"
-          onClose={() => setShowFilterDrawer(false)}
-          open={showFilterDrawer}
-          width={320}
-          className="custom-antd-drawer"
-          extra={
-            <button
-              className="filter-reset-btn"
-              onClick={() => {
-                setPDestination("all");
-                setPDuration("any");
-                setPStars({ 5: true, 4: true, 3: false, 2: false, 1: false });
-                setPPropertyTypes([]);
-                setPInclusions([]);
-                setPGroupSize("any");
-                setPBudget(50000);
-              }}
-            >
-              <FiRefreshCw size={11} /> Reset
-            </button>
-          }
-        >
+        {/* ── Filters Sidebar ── */}
+        <aside className="filters-sidebar">
           <div className="filter-card">
+            <div className="filter-header">
+              <span className="filter-header-title">🎚 Filters</span>
+              <button
+                className="filter-reset-btn"
+                onClick={() => {
+                  setDestination("all");
+                  setDuration("any");
+                  setStars({ 5: true, 4: true, 3: false, 2: false, 1: false });
+                  setPropertyTypes([]);
+                  setInclusions([]);
+                  setGroupSize("any");
+                  setBudget(50000);
+                }}
+              >
+                <FiRefreshCw size={11} /> Reset
+              </button>
+            </div>
+
             {/* Destination */}
             <div className="filter-group">
               <label className="filter-group-label">
@@ -394,8 +348,8 @@ export default function TourPackages({ onNavigate, onViewDetails }) {
               </label>
               <select
                 className="filter-select"
-                value={pDestination}
-                onChange={(e) => setPDestination(e.target.value)}
+                value={destination}
+                onChange={(e) => setDestination(e.target.value)}
               >
                 <option value="all">All Destinations</option>
                 <option value="puducherry">Puducherry</option>
@@ -411,8 +365,8 @@ export default function TourPackages({ onNavigate, onViewDetails }) {
               </label>
               <select
                 className="filter-select"
-                value={pDuration}
-                onChange={(e) => setPDuration(e.target.value)}
+                value={duration}
+                onChange={(e) => setDuration(e.target.value)}
               >
                 <option value="any">Any Duration</option>
                 <option value="1-2">1-2 Days</option>
@@ -429,14 +383,14 @@ export default function TourPackages({ onNavigate, onViewDetails }) {
                 type="range"
                 min={1000}
                 max={50000}
-                value={pBudget}
-                onChange={(e) => setPBudget(Number(e.target.value))}
+                value={budget}
+                onChange={(e) => setBudget(Number(e.target.value))}
                 className="filter-range"
               />
               <div className="price-inputs">
                 <input readOnly value="₹1,000" className="price-input" />
                 <span className="price-sep">to</span>
-                <input readOnly value={`₹${pBudget.toLocaleString()}`} className="price-input" />
+                <input readOnly value={`₹${budget.toLocaleString()}`} className="price-input" />
               </div>
             </div>
 
@@ -449,8 +403,8 @@ export default function TourPackages({ onNavigate, onViewDetails }) {
                 <label key={s} className="star-check-label">
                   <input
                     type="checkbox"
-                    checked={pStars[s]}
-                    onChange={() => setPStars((prev) => ({ ...prev, [s]: !prev[s] }))}
+                    checked={stars[s]}
+                    onChange={() => setStars((prev) => ({ ...prev, [s]: !prev[s] }))}
                   />
                   <span className="stars">{"★".repeat(s)}</span>
                   <span>{s} Star</span>
@@ -467,8 +421,8 @@ export default function TourPackages({ onNavigate, onViewDetails }) {
                 <label key={type} className="star-check-label">
                   <input
                     type="checkbox"
-                    checked={pPropertyTypes.includes(type)}
-                    onChange={() => setPPropertyTypes((prev) =>
+                    checked={propertyTypes.includes(type)}
+                    onChange={() => setPropertyTypes((prev) =>
                       prev.includes(type) ? prev.filter(t => t !== type) : [...prev, type]
                     )}
                   />
@@ -486,8 +440,8 @@ export default function TourPackages({ onNavigate, onViewDetails }) {
                 <label key={inc} className="star-check-label">
                   <input
                     type="checkbox"
-                    checked={pInclusions.includes(inc)}
-                    onChange={() => setPInclusions((prev) =>
+                    checked={inclusions.includes(inc)}
+                    onChange={() => setInclusions((prev) =>
                       prev.includes(inc) ? prev.filter(i => i !== inc) : [...prev, inc]
                     )}
                   />
@@ -503,8 +457,8 @@ export default function TourPackages({ onNavigate, onViewDetails }) {
               </label>
               <select
                 className="filter-select"
-                value={pGroupSize}
-                onChange={(e) => setPGroupSize(e.target.value)}
+                value={groupSize}
+                onChange={(e) => setGroupSize(e.target.value)}
               >
                 <option value="any">Any Group Size</option>
                 <option value="solo">Solo</option>
@@ -515,11 +469,19 @@ export default function TourPackages({ onNavigate, onViewDetails }) {
             </div>
 
 
-            <button className="apply-btn" onClick={applyFilters}>Apply Filters</button>
+            <button className="apply-btn">Apply Filters</button>
           </div>
 
-
-        </Drawer>
+          {/* ── Customize Promo Card ── */}
+          <div className="custom-promo-card">
+            <div className="promo-icon">✨</div>
+            <h3>Want a Custom Trip?</h3>
+            <p>Tell us your preferences and our experts will craft the perfect itinerary for you.</p>
+            <button className="promo-btn" onClick={() => setShowCustomModal(true)}>
+              Customize Package
+            </button>
+          </div>
+        </aside>
 
         {/* ── Listings ── */}
         <section className="listings-section">
@@ -587,20 +549,6 @@ export default function TourPackages({ onNavigate, onViewDetails }) {
             )}
           </div>
 
-          {/* ── Customize Promo Card Banner ── */}
-          <div className="custom-promo-card promo-banner">
-            <div className="promo-content-left">
-              <div className="promo-icon">✨</div>
-              <div className="promo-text">
-                <h3>Want a Custom Trip?</h3>
-                <p>Tell us your preferences and our experts will craft the perfect itinerary for you.</p>
-              </div>
-            </div>
-            <button className="promo-btn" onClick={() => setShowCustomModal(true)}>
-              Customize Package
-            </button>
-          </div>
-
           {/* Pagination */}
           <div className="pagination">
             <p className="pagination-info">
@@ -624,11 +572,6 @@ export default function TourPackages({ onNavigate, onViewDetails }) {
           </div>
         </section>
       </div>
-
-      {/* ── Floating Filter Button ── */}
-      <button className="floating-filter-btn" onClick={openFilters}>
-        <MdFilterListAlt size={20} /> Filters
-      </button>
 
       {/* ── Custom Package Modal ── */}
       {showCustomModal && (
