@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import "./PackageDetail.css";
+import Navbar from "./components/Navbar";
 import {
   FiMapPin, FiCheckCircle, FiChevronLeft,
   FiStar, FiClock, FiHome, FiTruck, FiCoffee, FiUser,
-  FiMessageCircle, FiHeart, FiShare2, FiShield, FiPhone
+  FiMessageCircle, FiHeart, FiShare2, FiShield, FiPhone, FiCamera,
+  FiTag, FiArrowRight, FiUsers, FiPhoneCall, FiRefreshCw, FiHeadphones,
+  FiMessageSquare, FiChevronRight, FiChevronDown, FiCalendar
 } from "react-icons/fi";
 
 import roomImg from "./assets/images/room.png";
@@ -12,15 +15,29 @@ import beachImg from "./assets/images/beach.png";
 import poolImg from "./assets/images/pool.png";
 
 const PackageDetail = ({ pkg, onBack }) => {
+  const [mainImage, setMainImage] = useState(pkg.image);
+  const [thumbnails, setThumbnails] = useState([roomImg, foodImg, beachImg, poolImg]);
   const [wishlisted, setWishlisted] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+    // Reset images if pkg changes
+    setMainImage(pkg.image);
+    setThumbnails([roomImg, foodImg, beachImg, poolImg]);
+  }, [pkg]);
 
   if (!pkg) return null;
 
-  const supportingImages = [roomImg, foodImg, beachImg, poolImg];
+  const handleImageSwap = (index) => {
+    const newThumbnails = [...thumbnails];
+    const oldMain = mainImage;
+    const newMain = thumbnails[index];
+    
+    newThumbnails[index] = oldMain;
+    
+    setMainImage(newMain);
+    setThumbnails(newThumbnails);
+  };
 
   // Calculate Date limits for the date picker (min: today, max: 6 months from today)
   const today = new Date();
@@ -31,8 +48,9 @@ const PackageDetail = ({ pkg, onBack }) => {
 
   return (
     <div className="detail-page">
+      <Navbar />
 
-      {/* ── Top Bar ── */}
+      {/* ── Top Bar (Back button + Actions) ── */}
       <div className="detail-topbar">
         <div className="detail-topbar-inner">
           <button onClick={onBack} className="detail-back-btn">
@@ -40,14 +58,8 @@ const PackageDetail = ({ pkg, onBack }) => {
           </button>
           
           <div className="detail-topbar-actions">
-            <button
-              className={`d-action-btn ${wishlisted ? "wishlisted" : ""}`}
-              onClick={() => setWishlisted(!wishlisted)}
-            >
-              <FiHeart fill={wishlisted ? "#ef4444" : "none"} color={wishlisted ? "#ef4444" : "#fff"} size={16} />
-            </button>
             <button className="d-action-btn">
-              <FiShare2 size={16} color="#fff" />
+              <FiShare2 size={16} />
             </button>
           </div>
         </div>
@@ -56,17 +68,22 @@ const PackageDetail = ({ pkg, onBack }) => {
       {/* ── Image Grid ── */}
       <div className="detail-img-section">
         <div className="detail-img-inner">
-          <div className="d-top-breadcrumb">
-            Home &rsaquo; Packages &rsaquo; <span>{pkg.title}</span>
-          </div>
           <div className="detail-img-grid">
             <div className="d-img-main">
-              <img src={pkg.image} alt={pkg.title} />
+              <img src={mainImage} alt={pkg.title} />
               <span className="d-img-badge">{pkg.badge}</span>
+              
+              <div className="detail-img-actions">
+                {/* Heart moved to title area, keeping container for potential future overlay needs or just removing if empty */}
+              </div>
             </div>
             <div className="d-img-sub-grid">
-              {supportingImages.map((img, i) => (
-                <div key={i} className="d-img-sub-cell">
+              {thumbnails.map((img, i) => (
+                <div 
+                  key={i} 
+                  className="d-img-sub-cell"
+                  onMouseEnter={() => handleImageSwap(i)}
+                >
                   <img src={img} alt={`Detail ${i}`} />
                 </div>
               ))}
@@ -85,7 +102,15 @@ const PackageDetail = ({ pkg, onBack }) => {
 
               {/* Title & Meta Header */}
               <div className="d-header-card">
+              <div className="d-header-title-flex">
                 <h1 className="d-header-title">{pkg.title}</h1>
+                <button
+                  className={`d-title-wishlist-btn ${wishlisted ? "wishlisted" : ""}`}
+                  onClick={() => setWishlisted(!wishlisted)}
+                >
+                  <FiHeart fill={wishlisted ? "#ef4444" : "none"} color={wishlisted ? "#ef4444" : "currentColor"} size={22} />
+                </button>
+              </div>
                 <div className="d-header-meta">
                   <span className="d-meta-pill"><FiClock size={14} /> {pkg.badge}</span>
                   <span className="d-meta-pill"><FiMapPin size={14} /> {pkg.location.split(",")[0]}</span>
@@ -93,23 +118,22 @@ const PackageDetail = ({ pkg, onBack }) => {
                 </div>
               </div>
 
-              {/* Story */}
-              <div className="d-card">
-                <h3 className="d-card-title">The Story</h3>
-                <p className="d-story-text">
-                  Step into the timeless charm of Pondicherry's French Quarter, where colonial architecture,
-                  vibrant streets, and serene beaches create a perfect blend of culture, relaxation, and indulgence.
-                  Experience the soul of the coast through this hand-picked journey.
-                </p>
-              </div>
-
-              {/* Tags */}
-              <div className="d-card">
-                <h3 className="d-card-title">What's Included</h3>
-                <div className="d-tags">
-                  {pkg.tags.map((tag) => (
-                    <span key={tag} className="d-tag"><FiCheckCircle size={13} /> {tag}</span>
-                  ))}
+              <div className="d-grid-two">
+                <div className="d-card">
+                  <h3 className="d-card-title">The Story</h3>
+                  <p className="d-story-text">
+                    Step into the timeless charm of Pondicherry's French Quarter, where colonial architecture,
+                    vibrant streets, and serene beaches create a perfect blend of culture and relaxation.
+                  </p>
+                </div>
+                <div className="d-card">
+                  <h3 className="d-card-title">What's Included</h3>
+                  <div className="d-tags-grid">
+                    <span className="d-tag-mini"><FiHome size={18} /> Stay</span>
+                    <span className="d-tag-mini"><FiCoffee size={18} /> Meals</span>
+                    <span className="d-tag-mini"><FiCamera size={18} /> Tours</span>
+                    <span className="d-tag-mini"><FiTruck size={18} /> Transport</span>
+                  </div>
                 </div>
               </div>
 
@@ -159,54 +183,69 @@ const PackageDetail = ({ pkg, onBack }) => {
             {/* Right Sticky Sidebar */}
             <div className="detail-right">
               <div className="d-sidebar-card">
-                <div className="d-price-block">
-                  <p className="d-price-label">Experience starts from</p>
-                  <div className="d-price-amount">₹{pkg.price.toLocaleString()}</div>
-                  <p className="d-price-per">Per person &nbsp;·&nbsp;
-                    <span className="d-price-discount">{pkg.discount}% OFF</span>
-                  </p>
-                </div>
-
-                <div className="d-date-row">
-                  <div className="d-date-field">
-                    <label className="d-field-label" htmlFor="checkin-date">Check In</label>
-                    <input 
-                      type="date" 
-                      id="checkin-date" 
-                      className="d-date-input" 
-                      min={minDate}
-                      max={maxDate}
-                    />
+                {/* Top Price Section */}
+                <div className="d-sidebar-top">
+                  <div className="d-price-pill">Experience starts from</div>
+                  <h2 className="d-price-amount-large">₹{pkg.price.toLocaleString()}</h2>
+                  <div className="d-price-per-wrapper">
+                    <div className="d-price-line"></div>
+                    <span className="d-price-per">Per person</span>
+                    <div className="d-price-line"></div>
                   </div>
-                  <div className="d-date-divider"></div>
-                  <div className="d-date-field">
-                    <label className="d-field-label" htmlFor="guest-select">Guests</label>
-                    <select id="guest-select" className="d-guest-select" defaultValue="2 Adults">
-                      <option value="1 Adult">1 Adult</option>
-                      <option value="2 Adults">2 Adults</option>
-                      <option value="3 Adults">3 Adults</option>
-                      <option value="4 Adults">4 Adults</option>
-                      <option value="Family">Family (2A + 2C)</option>
-                    </select>
+                  <div className="d-discount-pill">
+                    <FiTag size={12} /> {pkg.discount}% OFF
                   </div>
                 </div>
 
-                <button className="d-book-btn">Inquire &amp; Book Now</button>
-                <button className="d-call-btn"><FiPhone size={14} /> Call an Expert</button>
-
-                <div className="d-trust-list">
-                  <div className="d-trust-item"><FiCheckCircle size={15} /> Verified Properties</div>
-                  <div className="d-trust-item"><FiShield size={15} /> Flexible Cancellation</div>
-                  <div className="d-trust-item"><FiClock size={15} /> 24/7 Support</div>
-                </div>
-
-                <div className="d-chat-box">
-                  <div className="d-chat-text">
-                    <h5>Chat with an Expert</h5>
-                    <p>Get personalized assistance for your journey.</p>
+                {/* Booking Content Section */}
+                <div className="d-sidebar-main">
+                  <div className="d-booking-inputs">
+                    <div className="d-input-group">
+                      <div className="d-input-icon-box"><FiCalendar /></div>
+                      <div className="d-input-text">
+                        <label>CHECK-IN</label>
+                        <input type="text" defaultValue="dd-mm-yyyy" readOnly />
+                      </div>
+                      <FiCalendar className="d-chevron" />
+                    </div>
+                    <div className="d-input-divider"></div>
+                    <div className="d-input-group">
+                      <div className="d-input-icon-box"><FiUsers /></div>
+                      <div className="d-input-text">
+                        <label>GUESTS</label>
+                        <input type="text" defaultValue="2 Adults" readOnly />
+                      </div>
+                      <FiChevronDown className="d-chevron" />
+                    </div>
                   </div>
-                  <div className="d-chat-icon">
-                    <FiMessageCircle size={20} />
+
+                  <button className="d-book-btn-modern">
+                    Inquire & Book Now <FiArrowRight />
+                  </button>
+                  
+                  <button className="d-expert-btn">
+                    <FiPhoneCall size={18} /> Call an Expert
+                  </button>
+
+                  <div className="d-trust-row">
+                    <div className="d-trust-pill">
+                      <FiCheckCircle /> <span>Verified Properties</span>
+                    </div>
+                    <div className="d-trust-pill">
+                      <FiRefreshCw /> <span>Flexible Cancellation</span>
+                    </div>
+                    <div className="d-trust-pill">
+                      <FiHeadphones /> <span>24/7 Support</span>
+                    </div>
+                  </div>
+
+                  <div className="d-chat-card">
+                    <div className="d-chat-icon-main"><FiMessageSquare /></div>
+                    <div className="d-chat-body">
+                      <h4>Chat with an Expert</h4>
+                      <p>Get personalized assistance for your journey.</p>
+                    </div>
+                    <div className="d-chat-arrow"><FiChevronRight /></div>
                   </div>
                 </div>
               </div>

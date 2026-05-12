@@ -111,27 +111,20 @@
    HERO BAR (Premium Redesign)
    ============================================================ */
 .hero-bar-container {
-  padding: 1.5rem 1.5rem 0;
+  padding: 6.5rem 1.5rem 0;
   max-width: 1250px;
   margin: 0 auto;
 }
 
 .hero-bar-card {
-  background: #172554; /* THEME.colors.primaryDark */
-  border-radius: 12px;
-  padding: 0.7rem 2rem;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.3);
+  background: transparent;
+  border-radius: 0;
+  padding: 0.7rem 0;
   position: relative;
   overflow: hidden;
 }
 
-.hero-bar-card::after {
-  content: "";
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-image: radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%);
-  pointer-events: none;
-}
+/* Removed pseudo-element effects */
 
 .outer-breadcrumb {
   margin-bottom: 12px;
@@ -143,20 +136,20 @@
 }
 
 .hero-bar-card h1 {
-  font-size: 1.8rem;
+  font-size: 2.2rem;
   font-weight: 900;
-  color: #ffffff;
-  margin-bottom: 2px;
+  color: #1e3a8a;
+  margin-bottom: 4px;
   text-transform: uppercase;
   letter-spacing: -0.5px;
 }
 
 .hero-bar-card p {
-  font-size: 14px;
-  color: #ffffff; /* White text as requested */
+  font-size: 15px;
+  color: #64748b;
   max-width: 600px;
   font-weight: 500;
-  opacity: 0.9;
+  line-height: 1.6;
 }
 
 .breadcrumb {
@@ -229,7 +222,7 @@
   background: transparent;
   border-radius: 0;
   border: none;
-  padding: 1rem 1.1rem;
+  padding: 0.5rem 1rem;
 }
 
 .filter-drawer-header {
@@ -265,13 +258,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 14px;
+  margin-bottom: 8px;
 }
 
 /* Filter Group */
 .filter-group {
-  margin-bottom: 24px;
-  padding-bottom: 16px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
   border-bottom: 1px solid #f1f5f9;
 }
 
@@ -283,10 +276,10 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 800;
   color: #1e293b;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -301,8 +294,8 @@
   width: 100%;
   border: 0.5px solid #cbd5e1;
   border-radius: var(--radius-md);
-  padding: 6px 10px;
-  font-size: 12.5px;
+  padding: 5px 8px;
+  font-size: 12px;
   color: #334155;
   background: #f8fafc;
   cursor: pointer;
@@ -346,8 +339,8 @@
 .price-inputs {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-top: 10px;
+  gap: 8px;
+  margin-top: 6px;
 }
 
 .price-input-wrapper {
@@ -367,9 +360,9 @@
 .price-box {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 8px;
-  font-size: 13px;
+  border-radius: 6px;
+  padding: 6px;
+  font-size: 12px;
   font-weight: 700;
   color: #1e293b;
   text-align: center;
@@ -392,9 +385,9 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
   cursor: pointer;
-  padding: 4px 0;
+  padding: 2px 0;
   transition: 0.2s;
 }
 
@@ -437,7 +430,7 @@
 }
 
 .star-check-label span:last-child {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   color: #475569;
 }
@@ -447,7 +440,7 @@
   display: flex;
   align-items: center;
   gap: 7px;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
   cursor: pointer;
 }
 
@@ -456,8 +449,8 @@
 }
 
 .radio-label span {
-  font-size: 12.5px;
-  color: #334155;
+  font-size: 12px;
+  color: #475569;
 }
 
 /* Apply Button */
@@ -466,12 +459,12 @@
   background: var(--color-primary);
   color: #ffffff;
   border: none;
-  border-radius: 12px;
-  padding: 14px 0;
-  font-size: 14px;
+  border-radius: 8px;
+  padding: 10px 0;
+  font-size: 13px;
   font-weight: 800;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 8px;
   box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
   transition: all 0.3s ease;
 }

@@ -6,6 +6,7 @@
 
 import { useState } from "react";
 import "./Tour_Packages.css";
+import Navbar from "./components/Navbar";
 import {
   FiMapPin, FiCalendar, FiUsers, FiSearch, FiRefreshCw,
   FiHeart, FiChevronRight, FiChevronLeft, FiList, FiGrid,
@@ -359,12 +360,10 @@ export default function TourPackages({ onNavigate, onViewDetails, handleOpenCust
 
   return (
     <div className="tour-page">
+      <Navbar />
 
       {/* ── Hero Bar (Breadcrumb outside, Content in Card) ── */}
       <div className="hero-bar-container">
-        <div className="breadcrumb outer-breadcrumb">
-          Home <span className="sep">/</span> <span className="active">Packages</span>
-        </div>
         <div className="hero-bar-card">
           <h1>Holiday Packages</h1>
           <p>Explore our best curated holiday packages to amazing destinations across Puducherry and Mahabalipuram.</p>
@@ -377,7 +376,6 @@ export default function TourPackages({ onNavigate, onViewDetails, handleOpenCust
         <Drawer
           title={
             <div className="filter-drawer-header">
-              <MdFilterListAlt size={22} color="#1e3a8a" />
               <span>Filters</span>
             </div>
           }
