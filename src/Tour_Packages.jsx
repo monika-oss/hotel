@@ -360,12 +360,12 @@ export default function TourPackages({ onNavigate, onViewDetails, handleOpenCust
   return (
     <div className="tour-page">
 
-      {/* ── Hero Bar ── */}
-      <div className="hero-bar">
-        <div className="hero-bar-content">
-          <div className="breadcrumb">
-            Home <span className="sep">/</span> <span className="active">Packages</span>
-          </div>
+      {/* ── Hero Bar (Breadcrumb outside, Content in Card) ── */}
+      <div className="hero-bar-container">
+        <div className="breadcrumb outer-breadcrumb">
+          Home <span className="sep">/</span> <span className="active">Packages</span>
+        </div>
+        <div className="hero-bar-card">
           <h1>Holiday Packages</h1>
           <p>Explore our best curated holiday packages to amazing destinations across Puducherry and Mahabalipuram.</p>
         </div>
@@ -376,18 +376,19 @@ export default function TourPackages({ onNavigate, onViewDetails, handleOpenCust
         {/* ── Filters Sidebar (Antd Drawer) ── */}
         <Drawer
           title={
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <MdFilterListAlt size={20} /> Filters
+            <div className="filter-drawer-header">
+              <MdFilterListAlt size={22} color="#1e3a8a" />
+              <span>Filters</span>
             </div>
           }
           placement="right"
           onClose={() => setShowFilterDrawer(false)}
           open={showFilterDrawer}
-          width={320}
+          width={350}
           className="custom-antd-drawer"
           extra={
             <button
-              className="filter-reset-btn"
+              className="filter-reset-link"
               onClick={() => {
                 setPDestination("all");
                 setPDuration("any");
@@ -398,7 +399,7 @@ export default function TourPackages({ onNavigate, onViewDetails, handleOpenCust
                 setPBudget(50000);
               }}
             >
-              <FiRefreshCw size={11} /> Reset
+              Reset All
             </button>
           }
         >
@@ -406,7 +407,7 @@ export default function TourPackages({ onNavigate, onViewDetails, handleOpenCust
             {/* Destination */}
             <div className="filter-group">
               <label className="filter-group-label">
-                <FiMapPin size={12} /> Destination
+                <FiMapPin size={16} /> Destination
               </label>
               <select
                 className="filter-select"
@@ -423,7 +424,7 @@ export default function TourPackages({ onNavigate, onViewDetails, handleOpenCust
             {/* Duration */}
             <div className="filter-group">
               <label className="filter-group-label">
-                <FiCalendar size={12} /> Duration
+                <FiCalendar size={16} /> Duration
               </label>
               <select
                 className="filter-select"
@@ -440,7 +441,9 @@ export default function TourPackages({ onNavigate, onViewDetails, handleOpenCust
 
             {/* Budget */}
             <div className="filter-group">
-              <label className="filter-group-label">₹ Budget Per Person</label>
+              <label className="filter-group-label">
+                <FiTag size={16} /> Budget (Per Person)
+              </label>
               <input
                 type="range"
                 min={1000}
@@ -450,66 +453,77 @@ export default function TourPackages({ onNavigate, onViewDetails, handleOpenCust
                 className="filter-range"
               />
               <div className="price-inputs">
-                <input readOnly value="₹1,000" className="price-input" />
-                <span className="price-sep">to</span>
-                <input readOnly value={`₹${pBudget.toLocaleString()}`} className="price-input" />
+                <div className="price-input-wrapper">
+                  <span className="price-label">Min</span>
+                  <div className="price-box">₹1,000</div>
+                </div>
+                <div className="price-input-wrapper">
+                  <span className="price-label">Max</span>
+                  <div className="price-box highlight">₹{pBudget.toLocaleString()}</div>
+                </div>
               </div>
             </div>
 
             {/* Hotel Category */}
             <div className="filter-group">
               <label className="filter-group-label">
-                <FiHome size={12} /> Hotel Category
+                <FiStar size={16} /> Hotel Rating
               </label>
-              {[5, 4, 3, 2, 1].map((s) => (
-                <label key={s} className="star-check-label">
-                  <input
-                    type="checkbox"
-                    checked={pStars[s]}
-                    onChange={() => setPStars((prev) => ({ ...prev, [s]: !prev[s] }))}
-                  />
-                  <span className="stars">{"★".repeat(s)}</span>
-                  <span>{s} Star</span>
-                </label>
-              ))}
+              <div className="filter-options-grid">
+                {[5, 4, 3, 2, 1].map((s) => (
+                  <label key={s} className="star-check-label">
+                    <input
+                      type="checkbox"
+                      checked={pStars[s]}
+                      onChange={() => setPStars((prev) => ({ ...prev, [s]: !prev[s] }))}
+                    />
+                    <span className="stars">{"★".repeat(s)}</span>
+                    <span>{s} Star</span>
+                  </label>
+                ))}
+              </div>
             </div>
 
             {/* Property Type */}
             <div className="filter-group">
               <label className="filter-group-label">
-                <FiHome size={12} /> Property Type
+                <FiHome size={16} /> Property Type
               </label>
-              {["Resort", "Heritage", "Villa", "Homestay"].map((type) => (
-                <label key={type} className="star-check-label">
-                  <input
-                    type="checkbox"
-                    checked={pPropertyTypes.includes(type)}
-                    onChange={() => setPPropertyTypes((prev) =>
-                      prev.includes(type) ? prev.filter(t => t !== type) : [...prev, type]
-                    )}
-                  />
-                  <span>{type}</span>
-                </label>
-              ))}
+              <div className="filter-options-grid">
+                {["Resort", "Heritage", "Villa", "Homestay"].map((type) => (
+                  <label key={type} className="star-check-label">
+                    <input
+                      type="checkbox"
+                      checked={pPropertyTypes.includes(type)}
+                      onChange={() => setPPropertyTypes((prev) =>
+                        prev.includes(type) ? prev.filter(t => t !== type) : [...prev, type]
+                      )}
+                    />
+                    <span>{type}</span>
+                  </label>
+                ))}
+              </div>
             </div>
 
             {/* Inclusions */}
             <div className="filter-group">
               <label className="filter-group-label">
-                <FiCoffee size={12} /> Inclusions
+                <FiCoffee size={16} /> What's Included
               </label>
-              {["Breakfast & Dinner", "Transport", "Sightseeing", "Accommodation"].map((inc) => (
-                <label key={inc} className="star-check-label">
-                  <input
-                    type="checkbox"
-                    checked={pInclusions.includes(inc)}
-                    onChange={() => setPInclusions((prev) =>
-                      prev.includes(inc) ? prev.filter(i => i !== inc) : [...prev, inc]
-                    )}
-                  />
-                  <span>{inc}</span>
-                </label>
-              ))}
+              <div className="filter-options-grid">
+                {["Breakfast & Dinner", "Transport", "Sightseeing", "Accommodation"].map((inc) => (
+                  <label key={inc} className="star-check-label">
+                    <input
+                      type="checkbox"
+                      checked={pInclusions.includes(inc)}
+                      onChange={() => setPInclusions((prev) =>
+                        prev.includes(inc) ? prev.filter(i => i !== inc) : [...prev, inc]
+                      )}
+                    />
+                    <span>{inc}</span>
+                  </label>
+                ))}
+              </div>
             </div>
 
             {/* Group Size */}
