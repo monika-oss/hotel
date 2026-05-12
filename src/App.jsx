@@ -2,6 +2,7 @@ import { useState } from "react";
 import TourPackages from "./Tour_Packages";
 import PackageDetail from "./PackageDetail";
 import CustomizePackage from "./CustomizePackage";
+import MyRequests from "./MyRequests";
 
 export default function App() {
   const [view, setView] = useState("listings");
@@ -21,6 +22,10 @@ export default function App() {
     setView("customize");
   };
 
+  const handleOpenRequests = () => {
+    setView("requests");
+  };
+
   return (
     <div className="app-main">
       {view === "listings" && (
@@ -37,6 +42,12 @@ export default function App() {
       )}
       {view === "customize" && (
         <CustomizePackage 
+          onBack={handleBackToList} 
+          onNavigateToRequests={handleOpenRequests}
+        />
+      )}
+      {view === "requests" && (
+        <MyRequests 
           onBack={handleBackToList} 
         />
       )}

@@ -11,7 +11,7 @@ import {
   FiHeart, FiChevronRight, FiChevronLeft, FiList, FiGrid,
   FiStar, FiHome, FiTruck, FiCoffee, FiWind,
   FiAnchor, FiSunrise, FiNavigation, FiUser,
-  FiCheck, FiCamera, FiLayers, FiX
+  FiCheck, FiCamera, FiLayers, FiX, FiTag
 } from "react-icons/fi";
 import { MdFilterListAlt } from "react-icons/md";
 import { Drawer } from "antd";
@@ -153,7 +153,7 @@ const StarRating = ({ rating }) => {
   const full = Math.floor(rating);
   const half = rating % 1 >= 0.5;
   return (
-    <span>
+    <span className="star-rating-stars" style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
       {[...Array(5)].map((_, i) => (
         <FiStar
           key={i}
@@ -167,68 +167,84 @@ const StarRating = ({ rating }) => {
 };
 
 // ─── Package Card ─────────────────────────────────────────────────────────────
-const PackageCard = ({ pkg, wishlisted, onWishlist, onViewDetails, viewMode }) => (
-  <div className="pkg-card">
-    {/* Image Block */}
-    <div className="pkg-img-block">
-      <img src={pkg.image} alt={pkg.title} className="pkg-main-img" />
-      <span className={`pkg-badge ${pkg.badgeColor}`}>{pkg.badge}</span>
-      <button
-        onClick={() => onWishlist(pkg.id)}
-        className={`pkg-wishlist-btn-floating ${wishlisted ? "wishlisted" : ""}`}
-        aria-label="Wishlist"
-      >
-        <FiHeart fill={wishlisted ? THEME.colors.error : "none"} />
-      </button>
-      <span className="pkg-photo-count">📷 {pkg.photos} Photos</span>
-    </div>
+const PackageCard = ({ pkg, wishlisted, onWishlist, onViewDetails }) => {
+  return (
+    <div className="pkg-card grid-card">
+      {/* Image Block */}
+      <div className="pkg-img-block">
+        <img src={pkg.image} alt={pkg.title} className="pkg-main-img" />
+        <span className={`pkg-badge ${pkg.badgeColor}`}>{pkg.badge}</span>
+        <button
+          onClick={() => onWishlist(pkg.id)}
+          className={`pkg-wishlist-btn-floating ${wishlisted ? "wishlisted" : ""}`}
+        >
+          <FiHeart fill={wishlisted ? THEME.colors.error : "none"} />
+        </button>
+        <span className="pkg-photo-count"><FiCamera size={12} /> {pkg.photos} Photos</span>
+      </div>
 
-    {/* Body */}
-    <div className="pkg-body">
-      <div className="pkg-main-info">
+      {/* Content Body */}
+      <div className="pkg-body">
         <h2 className="pkg-title">{pkg.title}</h2>
         <div className="pkg-subtitle">
-          <span className="pkg-loc-text"><FiMapPin size={12} /> {pkg.location.split(",")[0]}</span>
+          <span className="pkg-loc-text" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <FiMapPin size={14} /> {pkg.location.split(",")[0]}
+          </span>
           <span className="pkg-sep">|</span>
           <span className="pkg-theme-text">{pkg.theme}</span>
         </div>
 
-        <div className="pkg-amenities">
-          {pkg.tags.slice(0, 4).map((tag) => (
-            <span key={tag} className="amenity-item">
-              {TAG_ICONS[tag] || <FiCheck size={12} />} {tag}
-            </span>
-          ))}
+        <div className="pkg-amenities-row">
+          <div className="amenity-cell">
+            <FiHome />
+            <span>Stay</span>
+          </div>
+          <div className="amenity-cell">
+            <FiCoffee />
+            <span>Breakfast & Dinner</span>
+          </div>
+          <div className="amenity-cell">
+            <FiCamera />
+            <span>Sightseeing</span>
+          </div>
+          <div className="amenity-cell">
+            <FiNavigation />
+            <span>Transport</span>
+          </div>
         </div>
 
-        <p className="pkg-desc">{pkg.description}</p>
-      </div>
-
-      <div className="pkg-rating-inline">
-        <StarRating rating={pkg.rating} />
-        <span className="pkg-rating-num">{pkg.rating}</span>
-      </div>
-    </div>
-
-    {/* Price Column */}
-    <div className="pkg-price-col">
-      <div className="pkg-price-wrapper">
-        <p className="price-label">Starting from</p>
-        <div className="price-row">
-          <span className="currency-symbol">₹</span>
-          <span className="price-value">{pkg.price.toLocaleString()}</span>
+        <div className="pkg-rating-row">
+          <StarRating rating={pkg.rating} />
+          <span className="pkg-rating-num">{pkg.rating}</span>
+          <span className="pkg-sep">|</span>
+          <span className="pkg-reviews-count">{pkg.reviews} Reviews</span>
         </div>
-        <p className="price-per">/- Per Person</p>
+      </div>
+
+      {/* Footer / Price */}
+      <div className="pkg-footer">
+        <div className="pkg-price-info">
+          <span className="price-from">From</span>
+          <div className="price-amount">
+            <span className="currency">₹</span>
+            <span className="value">{pkg.price.toLocaleString()}</span>
+          </div>
+          <span className="price-unit">/ Per Person</span>
+        </div>
+
         {pkg.discount > 0 && (
-          <span className="discount-tag">{pkg.discount}% OFF</span>
+          <div className="pkg-discount-pill">
+            <FiTag size={12} /> {pkg.discount}% OFF
+          </div>
         )}
+
+        <button className="view-details-btn-yellow" onClick={() => onViewDetails(pkg)}>
+          View Details <FiChevronRight size={16} />
+        </button>
       </div>
-      <button className="view-details-btn-yellow" onClick={() => onViewDetails(pkg)}>
-        View Details <FiChevronRight size={16} />
-      </button>
     </div>
-  </div>
-);
+  );
+};
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function TourPackages({ onNavigate, onViewDetails, handleOpenCustomize }) {
@@ -236,7 +252,6 @@ export default function TourPackages({ onNavigate, onViewDetails, handleOpenCust
   const [sort, setSort] = useState("latest");
   const [showFilterDrawer, setShowFilterDrawer] = useState(false);
   const [wishlist, setWishlist] = useState([]);
-  const [viewMode, setViewMode] = useState("list");
   const [currentPage, setCurrentPage] = useState(1);
 
   // ─── Filter States (Active) ───
@@ -274,7 +289,7 @@ export default function TourPackages({ onNavigate, onViewDetails, handleOpenCust
     setDuration(pDuration);
     setStars(pStars);
     setPropertyTypes(pPropertyTypes);
-    setInclusions(pInclusions);
+    setPInclusions(inclusions);
     setGroupSize(pGroupSize);
     setBudget(pBudget);
     setShowFilterDrawer(false);
@@ -348,9 +363,11 @@ export default function TourPackages({ onNavigate, onViewDetails, handleOpenCust
       {/* ── Hero Bar ── */}
       <div className="hero-bar">
         <div className="hero-bar-content">
-          <p className="breadcrumb">Home &rsaquo; <span>Packages</span></p>
-          <h1>HOLIDAY PACKAGES</h1>
-          <p>Explore our best curated holiday packages to amazing destinations.</p>
+          <div className="breadcrumb">
+            Home <span className="sep">/</span> <span className="active">Packages</span>
+          </div>
+          <h1>Holiday Packages</h1>
+          <p>Explore our best curated holiday packages to amazing destinations across Puducherry and Mahabalipuram.</p>
         </div>
       </div>
 
@@ -547,25 +564,11 @@ export default function TourPackages({ onNavigate, onViewDetails, handleOpenCust
                 <option value="price-desc">Price: High to Low</option>
                 <option value="popular">Most Popular</option>
               </select>
-              <div className="view-toggle">
-                {[
-                  { mode: "list", Icon: FiList },
-                  { mode: "grid", Icon: FiGrid },
-                ].map(({ mode, Icon }) => (
-                  <button
-                    key={mode}
-                    onClick={() => setViewMode(mode)}
-                    className={`view-toggle-btn ${viewMode === mode ? "active" : ""}`}
-                  >
-                    <Icon size={15} />
-                  </button>
-                ))}
-              </div>
             </div>
           </div>
 
           {/* Cards */}
-          <div className={`listings-container ${viewMode}`}>
+          <div className="listings-container grid">
             {filtered.length === 0 ? (
               <div className="empty-state">
                 <span className="empty-icon">🔍</span>
@@ -580,7 +583,6 @@ export default function TourPackages({ onNavigate, onViewDetails, handleOpenCust
                   wishlisted={wishlist.includes(pkg.id)}
                   onWishlist={toggleWishlist}
                   onViewDetails={onViewDetails}
-                  viewMode={viewMode}
                 />
               ))
             )}

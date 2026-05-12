@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { FiX, FiMapPin, FiCalendar, FiUsers, FiBriefcase, FiTarget, FiCoffee, FiInfo, FiCheck, FiChevronLeft } from 'react-icons/fi';
 import { MdOutlineHotel, MdOutlineLocalActivity, MdRestaurant } from 'react-icons/md';
 import { THEME, formatCurrency } from './config';
+import RequestSuccessModal from './components/RequestSuccessModal';
 import './CustomizePackage.css';
 
-const CustomizePackage = ({ onBack }) => {
+const CustomizePackage = ({ onBack, onNavigateToRequests }) => {
   const [formData, setFormData] = useState({
     destination: 'Mahabalipuram',
     placesToVisit: 'hgfhhfgh',
@@ -17,6 +18,8 @@ const CustomizePackage = ({ onBack }) => {
     mealPreference: 'Breakfast Only',
     specialRequirements: ''
   });
+
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   const handleActivityToggle = (activity) => {
     setFormData(prev => ({
@@ -227,21 +230,41 @@ const CustomizePackage = ({ onBack }) => {
                   mealPreference: 'Breakfast Only',
                   specialRequirements: ''
                 })}>Reset</button>
-                <button className="cp-submit-btn" style={{ backgroundColor: THEME.colors.accent }}>Submit Request</button>
+                <button 
+                  className="cp-submit-btn" 
+                  style={{ backgroundColor: THEME.colors.accent }}
+                  onClick={() => setIsSuccessModalOpen(true)}
+                >
+                  Submit Request
+                </button>
             </footer>
           </div>
         </div>
 
+        {/* Success Modal */}
+        <RequestSuccessModal 
+          isOpen={isSuccessModalOpen} 
+          onClose={() => setIsSuccessModalOpen(false)}
+          referenceId="PKG1023"
+          onViewRequests={() => {
+            setIsSuccessModalOpen(false);
+            onNavigateToRequests();
+          }}
+          onGoHome={() => {
+            setIsSuccessModalOpen(false);
+            onBack(); // Go back to packages/home
+          }}
+        />
+
         {/* Sidebar Summary */}
         <aside className="cp-sidebar">
           <div className="cp-summary-card">
-            <button className="cp-close-sidebar" onClick={onBack}><FiX /></button>
             <h3 style={{ color: THEME.colors.primary }}>Your Summary</h3>
             <ul className="cp-summary-list">
               <li>
                 <div className="cp-summary-item">
                   <FiMapPin className="cp-summary-icon" />
-                  <div>
+                  <div className="cp-summary-info">
                     <span className="label">Destination</span>
                     <span className="value">{formData.destination}</span>
                   </div>
@@ -250,7 +273,7 @@ const CustomizePackage = ({ onBack }) => {
               <li>
                 <div className="cp-summary-item">
                   <FiCalendar className="cp-summary-icon" />
-                  <div>
+                  <div className="cp-summary-info">
                     <span className="label">Dates</span>
                     <span className="value">{formData.startDate} - {formData.endDate}</span>
                   </div>
@@ -259,7 +282,7 @@ const CustomizePackage = ({ onBack }) => {
               <li>
                 <div className="cp-summary-item">
                   <FiCalendar className="cp-summary-icon" />
-                  <div>
+                  <div className="cp-summary-info">
                     <span className="label">Duration</span>
                     <span className="value">{formData.numDays}</span>
                   </div>
@@ -268,7 +291,7 @@ const CustomizePackage = ({ onBack }) => {
               <li>
                 <div className="cp-summary-item">
                   <FiUsers className="cp-summary-icon" />
-                  <div>
+                  <div className="cp-summary-info">
                     <span className="label">Guests</span>
                     <span className="value">{formData.guests} Adults</span>
                   </div>
@@ -277,7 +300,7 @@ const CustomizePackage = ({ onBack }) => {
               <li>
                 <div className="cp-summary-item">
                   <MdOutlineHotel className="cp-summary-icon" />
-                  <div>
+                  <div className="cp-summary-info">
                     <span className="label">Hotel Preference</span>
                     <span className="value">{formData.hotelPreference}</span>
                   </div>
@@ -286,7 +309,7 @@ const CustomizePackage = ({ onBack }) => {
               <li>
                 <div className="cp-summary-item">
                   <MdOutlineLocalActivity className="cp-summary-icon" />
-                  <div>
+                  <div className="cp-summary-info">
                     <span className="label">Activities</span>
                     <span className="value">{formData.activities.length} Selected</span>
                   </div>
@@ -295,7 +318,7 @@ const CustomizePackage = ({ onBack }) => {
               <li>
                 <div className="cp-summary-item">
                   <MdRestaurant className="cp-summary-icon" />
-                  <div>
+                  <div className="cp-summary-info">
                     <span className="label">Meal Preference</span>
                     <span className="value">{formData.mealPreference}</span>
                   </div>
@@ -305,7 +328,9 @@ const CustomizePackage = ({ onBack }) => {
 
             <div className="cp-price-box">
               <span className="price-label">Estimated Price</span>
-              <div className="cp-price-value" style={{ color: THEME.colors.primary }}>{formatCurrency(18999)} /-</div>
+              <div className="cp-price-value" style={{ color: THEME.colors.primary }}>
+                {formatCurrency(18999)} /-
+              </div>
               <span className="price-per">Per Person</span>
             </div>
 

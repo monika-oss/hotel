@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FiX, FiMapPin, FiCalendar, FiUsers, FiBriefcase, FiTarget, FiCoffee, FiInfo, FiCheck } from 'react-icons/fi';
 import { MdOutlineHotel, MdOutlineLocalActivity, MdRestaurant } from 'react-icons/md';
+import RequestSuccessModal from './RequestSuccessModal';
 import './CustomizePackageModal.css';
 
 const CustomizePackageModal = ({ isOpen, onClose }) => {
@@ -16,6 +17,8 @@ const CustomizePackageModal = ({ isOpen, onClose }) => {
     mealPreference: 'Breakfast Only',
     specialRequirements: ''
   });
+
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   if (!isOpen) return null;
 
@@ -229,9 +232,24 @@ const CustomizePackageModal = ({ isOpen, onClose }) => {
               mealPreference: 'Breakfast Only',
               specialRequirements: ''
             })}>Reset</button>
-            <button className="cpm-submit-btn">Submit Request</button>
+            <button className="cpm-submit-btn" onClick={() => setIsSuccessModalOpen(true)}>Submit Request</button>
           </footer>
         </div>
+
+        {/* Success Modal */}
+        <RequestSuccessModal 
+          isOpen={isSuccessModalOpen} 
+          onClose={() => setIsSuccessModalOpen(false)}
+          referenceId="PKG1024"
+          onViewRequests={() => {
+            setIsSuccessModalOpen(false);
+            // Navigate to requests if needed
+          }}
+          onGoHome={() => {
+            setIsSuccessModalOpen(false);
+            onClose(); // Close both modals
+          }}
+        />
 
         {/* Sidebar Summary */}
         <aside className="cpm-sidebar">
