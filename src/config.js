@@ -44,6 +44,7 @@ export const THEME = {
     success: '#10b981',     // Green (for LIVE Confirmations)
     warning: '#f97316',     // Orange (for CALL Mode)
     error: '#ef4444',       // Red
+    background: '#ebf2ff',  // Light Blue Tint
   }
 };
 

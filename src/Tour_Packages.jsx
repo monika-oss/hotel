@@ -231,10 +231,9 @@ const PackageCard = ({ pkg, wishlisted, onWishlist, onViewDetails, viewMode }) =
 );
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
-export default function TourPackages({ onNavigate, onViewDetails }) {
+export default function TourPackages({ onNavigate, onViewDetails, handleOpenCustomize }) {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("latest");
-  const [showCustomModal, setShowCustomModal] = useState(false);
   const [showFilterDrawer, setShowFilterDrawer] = useState(false);
   const [wishlist, setWishlist] = useState([]);
   const [viewMode, setViewMode] = useState("list");
@@ -596,7 +595,7 @@ export default function TourPackages({ onNavigate, onViewDetails }) {
                 <p>Tell us your preferences and our experts will craft the perfect itinerary for you.</p>
               </div>
             </div>
-            <button className="promo-btn" onClick={() => setShowCustomModal(true)}>
+            <button className="promo-btn" onClick={handleOpenCustomize}>
               Customize Package
             </button>
           </div>
@@ -630,46 +629,6 @@ export default function TourPackages({ onNavigate, onViewDetails }) {
         <MdFilterListAlt size={20} /> Filters
       </button>
 
-      {/* ── Custom Package Modal ── */}
-      {showCustomModal && (
-        <div className="custom-modal-overlay">
-          <div className="custom-modal">
-            <button className="modal-close-btn" onClick={() => setShowCustomModal(false)}>
-              <FiX size={20} />
-            </button>
-            <div className="modal-header">
-              <h2>Customize Your Package</h2>
-              <p>Fill out the details below and we'll get back to you with a personalized itinerary.</p>
-            </div>
-            <div className="modal-body">
-              <div className="form-group">
-                <label>Where do you want to go?</label>
-                <input type="text" placeholder="e.g. Pondicherry & Auroville" />
-              </div>
-              <div className="form-row">
-                <div className="form-group">
-                  <label>Travel Dates</label>
-                  <input type="date" />
-                </div>
-                <div className="form-group">
-                  <label>Number of Guests</label>
-                  <input type="number" placeholder="2" min="1" />
-                </div>
-              </div>
-              <div className="form-group">
-                <label>Special Requirements</label>
-                <textarea rows="3" placeholder="Any specific hotels, places to visit, or dietary requirements?"></textarea>
-              </div>
-              <button className="submit-modal-btn" onClick={() => {
-                alert("Your request has been submitted! Our experts will contact you soon.");
-                setShowCustomModal(false);
-              }}>
-                Submit Request
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
