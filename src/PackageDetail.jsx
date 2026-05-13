@@ -182,70 +182,71 @@ const PackageDetail = ({ pkg, onBack }) => {
 
             {/* Right Sticky Sidebar */}
             <div className="detail-right">
-              <div className="d-sidebar-card">
-                {/* Top Price Section */}
-                <div className="d-sidebar-top">
-                  <div className="d-price-pill">Experience starts from</div>
-                  <h2 className="d-price-amount-large">₹{pkg.price.toLocaleString()}</h2>
-                  <div className="d-price-per-wrapper">
-                    <div className="d-price-line"></div>
-                    <span className="d-price-per">Per person</span>
-                    <div className="d-price-line"></div>
-                  </div>
-                  <div className="d-discount-pill">
-                    <FiTag size={12} /> {pkg.discount}% OFF
+              <div className="d-booking-sidebar-card">
+                {/* Header Section */}
+                <div className="d-booking-header-navy">
+                  <p className="d-header-small-text">Experience starts from</p>
+                  <h2 className="d-header-price-main">₹{pkg.price.toLocaleString()}</h2>
+                  <p className="d-header-small-text opacity-70">Per person</p>
+                  <div className="d-discount-badge-yellow">
+                    {pkg.discount}% OFF
                   </div>
                 </div>
 
-                {/* Booking Content Section */}
-                <div className="d-sidebar-main">
-                  <div className="d-booking-inputs">
-                    <div className="d-input-group">
-                      <div className="d-input-icon-box"><FiCalendar /></div>
-                      <div className="d-input-text">
-                        <label>CHECK-IN</label>
-                        <input type="text" defaultValue="dd-mm-yyyy" readOnly />
+                {/* Main Content */}
+                <div className="d-booking-body-content">
+                  <div className="d-date-guest-box">
+                    <div className="d-form-field">
+                      <label>CHECK IN</label>
+                      <div className="d-field-value">
+                        <span>dd-mm-yyyy</span>
+                        <FiCalendar />
                       </div>
-                      <FiCalendar className="d-chevron" />
                     </div>
-                    <div className="d-input-divider"></div>
-                    <div className="d-input-group">
-                      <div className="d-input-icon-box"><FiUsers /></div>
-                      <div className="d-input-text">
-                        <label>GUESTS</label>
-                        <input type="text" defaultValue="2 Adults" readOnly />
+                    <div className="d-field-sep"></div>
+                    <div className="d-form-field">
+                      <label>GUESTS</label>
+                      <div className="d-field-value">
+                        <span className="font-bold">2 Adults</span>
+                        <FiChevronDown />
                       </div>
-                      <FiChevronDown className="d-chevron" />
                     </div>
                   </div>
 
-                  <button className="d-book-btn-modern">
-                    Inquire & Book Now <FiArrowRight />
+                  <button className="d-btn-book-now-orange">
+                    Inquire & Book Now <FiArrowRight size={20} />
                   </button>
                   
-                  <button className="d-expert-btn">
-                    <FiPhoneCall size={18} /> Call an Expert
+                  <button className="d-btn-call-expert-blue">
+                    <FiPhone size={18} /> Call an Expert
                   </button>
 
-                  <div className="d-trust-row">
-                    <div className="d-trust-pill">
-                      <FiCheckCircle /> <span>Verified Properties</span>
+                  <div className="d-trust-badges-row">
+                    <div className="d-trust-badge">
+                      <div className="d-badge-icon-circle"><FiCheckCircle /></div>
+                      <span className="d-badge-label">Verified Properties</span>
                     </div>
-                    <div className="d-trust-pill">
-                      <FiRefreshCw /> <span>Flexible Cancellation</span>
+                    <div className="d-trust-badge">
+                      <div className="d-badge-icon-circle"><FiRefreshCw /></div>
+                      <span className="d-badge-label">Flexible Cancellation</span>
                     </div>
-                    <div className="d-trust-pill">
-                      <FiHeadphones /> <span>24/7 Support</span>
+                    <div className="d-trust-badge">
+                      <div className="d-badge-icon-circle"><FiHeadphones /></div>
+                      <span className="d-badge-label">24/7 Support</span>
                     </div>
                   </div>
 
-                  <div className="d-chat-card">
-                    <div className="d-chat-icon-main"><FiMessageSquare /></div>
-                    <div className="d-chat-body">
+                  <div className="d-expert-chat-widget">
+                    <div className="d-chat-widget-icon">
+                      <FiMessageSquare size={20} />
+                    </div>
+                    <div className="d-chat-widget-text">
                       <h4>Chat with an Expert</h4>
                       <p>Get personalized assistance for your journey.</p>
                     </div>
-                    <div className="d-chat-arrow"><FiChevronRight /></div>
+                    <button className="d-chat-widget-arrow">
+                      <FiChevronRight />
+                    </button>
                   </div>
                 </div>
               </div>
