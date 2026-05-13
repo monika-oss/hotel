@@ -1058,8 +1058,8 @@
   }
 
   .hero-bar-card {
-    padding: 1rem;
-    text-align: center;
+    padding: 1rem 0;
+    text-align: left;
   }
 
   .hero-bar-card h1 {
@@ -1069,7 +1069,7 @@
 
   .hero-bar-card p {
     font-size: 13px;
-    margin: 0 auto;
+    margin: 0;
   }
 
   .listings-topbar {
@@ -1080,7 +1080,7 @@
   }
 
   .listings-count {
-    text-align: center;
+    text-align: left;
     font-size: 13px;
   }
 
@@ -1119,15 +1119,16 @@
   }
 
   .pkg-amenities-row {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    padding: 12px 0;
   }
 
   .amenity-cell {
-    border: none;
-    background: #f8fafc;
-    padding: 8px;
-    border-radius: 8px;
+    border-right: 1px solid #f1f5f9;
+    background: transparent;
+    padding: 4px 0;
+    border-radius: 0;
   }
 
   .pkg-footer {
@@ -1140,7 +1141,7 @@
   .pkg-price-info {
     flex-direction: row;
     align-items: baseline;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 8px;
   }
 
@@ -1155,7 +1156,7 @@
   }
 
   .pkg-discount-pill {
-    justify-content: center;
+    justify-content: flex-start;
   }
 
   /* Pagination */
