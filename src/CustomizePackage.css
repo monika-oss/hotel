@@ -472,10 +472,59 @@
     flex-direction: column;
     max-width: 800px;
     margin: 0 auto;
+    min-height: auto;
   }
   .cp-sidebar {
     width: 100%;
     border-left: none;
     border-top: 1px solid #eaecf0;
+    padding: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .cp-page-wrapper {
+    padding: 10px;
+  }
+  .cp-main-content {
+    padding: 24px 20px;
+  }
+  .cp-header h1 {
+    font-size: 20px;
+  }
+  .cp-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .cp-row.grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .cp-card-group, .cp-radio-group {
+    grid-template-columns: 1fr;
+  }
+  .cp-footer-actions {
+    flex-direction: column;
+  }
+  .cp-submit-btn, .cp-reset-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .cp-row.grid-4 {
+    grid-template-columns: 1fr;
+  }
+  .cp-header h1 {
+    font-size: 1.25rem;
+  }
+  .cp-section-title {
+    font-size: 14px;
+  }
+  .cp-summary-card h3 {
+    font-size: 20px;
+    margin-bottom: 24px;
+  }
+  .cp-price-value {
+    font-size: 32px;
   }
 }

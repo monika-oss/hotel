@@ -6,7 +6,7 @@ import {
   FiStar, FiClock, FiHome, FiTruck, FiCoffee, FiUser,
   FiMessageCircle, FiHeart, FiShare2, FiShield, FiPhone, FiCamera,
   FiTag, FiArrowRight, FiUsers, FiPhoneCall, FiRefreshCw, FiHeadphones,
-  FiMessageSquare, FiChevronRight, FiChevronDown, FiCalendar
+  FiMessageSquare, FiChevronRight, FiChevronDown, FiCalendar, FiX
 } from "react-icons/fi";
 
 import roomImg from "./assets/images/room.png";
@@ -18,6 +18,7 @@ const PackageDetail = ({ pkg, onBack }) => {
   const [mainImage, setMainImage] = useState(pkg.image);
   const [thumbnails, setThumbnails] = useState([roomImg, foodImg, beachImg, poolImg]);
   const [wishlisted, setWishlisted] = useState(false);
+  const [showMobileBooking, setShowMobileBooking] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -181,8 +182,15 @@ const PackageDetail = ({ pkg, onBack }) => {
             </div>
 
             {/* Right Sticky Sidebar */}
-            <div className="detail-right">
+            <div className={`detail-right ${showMobileBooking ? "mobile-open" : ""}`}>
+              {/* Mobile Overlay */}
+              <div className="d-mobile-overlay" onClick={() => setShowMobileBooking(false)}></div>
+              
               <div className="d-booking-sidebar-card">
+                {/* Mobile Close Button */}
+                <button className="d-mobile-close-btn" onClick={() => setShowMobileBooking(false)}>
+                  <FiX size={20} />
+                </button>
                 {/* Header Section */}
                 <div className="d-booking-header-navy">
                   <p className="d-header-small-text">Experience starts from</p>
@@ -254,6 +262,20 @@ const PackageDetail = ({ pkg, onBack }) => {
 
           </div>
         </div>
+      </div>
+      {/* ── Sticky Mobile Footer ── */}
+      <div className="d-mobile-sticky-footer">
+        <div className="d-msf-left">
+          <span className="d-msf-label">Starts from</span>
+          <div className="d-msf-price-row">
+            <span className="d-msf-price">₹{pkg.price.toLocaleString()}</span>
+            <span className="d-msf-unit">/ person</span>
+          </div>
+          <span className="d-msf-discount">{pkg.discount}% OFF</span>
+        </div>
+        <button className="d-msf-btn" onClick={() => setShowMobileBooking(true)}>
+          Inquire & Book Now <FiChevronRight size={20} />
+        </button>
       </div>
     </div>
   );

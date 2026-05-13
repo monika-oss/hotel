@@ -384,6 +384,9 @@
 }
 
 @media (max-width: 768px) {
+  .mr-page {
+    padding: 20px 10px;
+  }
   .mr-main-card {
     padding: 24px 16px;
     border-radius: 20px;
@@ -393,7 +396,8 @@
   }
   .mr-card-main {
     flex-direction: column;
-    gap: 24px;
+    gap: 20px;
+    padding: 20px;
   }
   .mr-card-right {
     align-items: flex-start;
@@ -406,5 +410,37 @@
   .mr-filter-tabs {
     width: 100%;
     overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  .mr-meta-grid {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .mr-card-footer {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 20px;
+  }
+  .mr-footer-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+  .mr-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .mr-header h1 {
+    font-size: 22px;
+  }
+  .mr-dest-title {
+    font-size: 18px;
+  }
+  .mr-price-block .price-val {
+    font-size: 22px;
   }
 }
